@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Poppins', sans-serif;
+    background:black;
+    color:#f2f2f0;
+    overflow:hidden;
+}
+
+section{
+    position:absolute;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+section.active{display:flex;}
+
+.back{
+    position:absolute;
+    top:20px;
+    left:20px;
+    background:rgba(0,0,0,0.6);
+    color:#f2f2f0;
+    border:none;
+    padding:10px 18px;
+    border-radius:20px;
+    cursor:pointer;
+    z-index:5;
+}
+
+#home{
+    background:url("photo4.jpeg") center/cover no-repeat;
+}
+#home::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+}
+
+.hero{position:relative;z-index:2;text-align:center;}
+.hero h1{
+    font-family:'Playfair Display', serif;
+    font-size:56px;
+    margin-bottom:40px;
+}
+.hero button{
+    padding:16px 48px;
+    font-size:18px;
+    border-radius:30px;
+    border:none;
+    cursor:pointer;
+    background:#1f1f1f;
+    color:#f2f2f0;
+}
+
+.card{
+    background:rgba(20,20,20,0.75);
+    backdrop-filter:blur(10px);
+    border-radius:28px;
+    padding:60px 40px;
+    max-width:600px;
+    width:90%;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,0.6);
+    animation:fade 1s ease;
+}
+
+@keyframes fade{
+    from{opacity:0; transform:translateY(25px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+.card h2{
+    font-family:'Playfair Display', serif;
+    font-size:34px;
+    margin-bottom:20px;
+}
+
+.card p{font-size:17px;line-height:1.7;}
+
+input{
+    width:85%;
+    padding:16px;
+    font-size:17px;
+    border-radius:14px;
+    border:none;
+    margin-top:25px;
+}
+
+.btn{
+    margin-top:30px;
+    padding:15px 40px;
+    font-size:17px;
+    border-radius:30px;
+    border:none;
+    background:#9bb7a5;
+    color:#111;
+    cursor:pointer;
+}
+
+.photos{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    margin-top:30px;
+}
+
+.flip{perspective:1000px;}
+.flip-inner{
+    width:100%;
+    height:200px;
+    transition:0.8s;
+    transform-style:preserve-3d;
+    cursor:pointer;
+}
+.flip.active .flip-inner{transform:rotateY(180deg);}
+.flip-front,.flip-back{
+    position:absolute;
+    inset:0;
+    border-radius:18px;
+    backface-visibility:hidden;
+}
+.flip-front{
+    background:#1f1f1f;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.flip-back{
+    transform:rotateY(180deg);
+    background-size:cover;
+    background-position:center;
+}
+
+video{
+    width:100%;
+    border-radius:20px;
+    margin-top:25px;
+}
+
+#hiddenMsg{
+    display:none;
+    margin-top:25px;
+    font-family:'Playfair Display', serif;
+    font-size:22px;
+    color:#9bb7a5;
+}
+
+audio{display:none;}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 BACKGROUND MUSIC -->
+<audio id="bgMusic">
+    <source src="birthday.mp4" type="video/mp4">
+</audio>
+
+<!-- HOME -->
+<section id="home" class="active">
+    <div class="hero">
+        <h1>Happy Birthday My Love ❤️</h1>
+        <button onclick="go('lock')">Open</button>
+    </div>
+</section>
+
+<!-- LOCK -->
+<section id="lock">
+    <button class="back" onclick="go('home')">← Back</button>
+    <div class="card">
+        <h2>🔐 Locked</h2>
+        <p>Only for someone special</p>
+        <input type="password" id="pass" placeholder="Enter password">
+        <button class="btn" onclick="checkPass()">Unlock</button>
+    </div>
+</section>
+
+<!-- LETTER -->
+<section id="letter">
+    <button class="back" onclick="go('lock')">← Back</button>
+    <div class="card">
+        <h2>💌 From My Heart</h2>
+        <p>You are my peace, my person, my always.
+            If you even hate me I still love you more and more even more dear.
+            Wear ur headphones and isten to it</p>
+        <p><b>Happy Birthday my pretty 🤍</b></p>
+        <button class="btn" onclick="continueAfterMusic()">Continue</button>
+    </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+    <button class="back" onclick="go('letter')">← Back</button>
+    <div class="card">
+        <h2>💭 One Question</h2>
+        <p>Where did we first meet?</p>
+        <input id="ans" placeholder="Your answer">
+        <button class="btn" onclick="checkAns()">Next</button>
+    </div>
+</section>
+
+<!-- MEMORIES -->
+<section id="memories">
+    <button class="back" onclick="go('quiz')">← Back</button>
+    <div class="card">
+        <h2>📸 Memories</h2>
+
+        <div class="photos">
+            <div class="flip" onclick="flip(this)">
+                <div class="flip-inner">
+                    <div class="flip-front">Tap 🤍</div>
+                    <div class="flip-back" style="background-image:url('photo1.jpeg')"></div>
+                </div>
+            </div>
+
+            <div class="flip" onclick="flip(this)">
+                <div class="flip-inner">
+                    <div class="flip-front">Tap 🤍</div>
+                    <div class="flip-back" style="background-image:url('photo2.jpeg')"></div>
+                </div>
+            </div>
+
+            <div class="flip" onclick="flip(this)">
+                <div class="flip-inner">
+                    <div class="flip-front">Tap 🤍</div>
+                    <div class="flip-back" style="background-image:url('photo3.jpeg')"></div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn" onclick="go('video')">For you dear</button>
+    </div>
+</section>
+
+<!-- VIDEO -->
+<section id="video">
+    <button class="back" onclick="go('memories')">← Back</button>
+    <div class="card">
+        <h2>🎥 Just For You</h2>
+        <video controls>
+            <source src="yourvideo.mp4" type="video/mp4">
+        </video>
+        <button class="btn" onclick="showMsg()">Show a message</button>
+        <div id="hiddenMsg">My heart will always choose you............................
+            ..........................................
+                   
+            ...         ....<thead> </thead>🤍</div>
+    </div>
+</section>
+
+<script>
+const music = document.getElementById("bgMusic");
+
+function go(id){
+    document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+}
+
+function checkPass(){
+    if(pass.value === "26102005"){
+        music.volume = 0.5;
+        music.play();
+        go("letter");
+    } else {
+        alert("Wrong password 😌");
+    }
+}
+
+/* STOP MUSIC when Continue is clicked */
+function continueAfterMusic(){
+    music.pause();
+    music.currentTime = 0;
+    go("quiz");
+}
+
+/* STOP music automatically when audio ends */
+music.addEventListener("ended", ()=>{
+    music.pause();
+    music.currentTime = 0;
+});
+
+function checkAns(){
+    if(ans.value.toLowerCase().includes("college")){
+        go("memories");
+    } else {
+        alert("Try again 😉");
+    }
+}
+
+function flip(el){
+    el.classList.toggle("active");
+}
+
+function showMsg(){
+    hiddenMsg.style.display = "block";
+}
+</script>
+
+</body>
+</html>
